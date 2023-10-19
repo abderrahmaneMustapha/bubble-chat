@@ -16,10 +16,26 @@ const ChatBubbleContainer: React.FC<ChatBubbleContainerProps> = (props) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
+  const [, setSelectedImage] = useState<File | null>(null);
+  const [,setSelectedAudio] = useState<File | null>(null);
 
   const handleSendMessage = () => {
     console.log('Sending message:', message);
     setMessage('');
+  };
+
+  const handleImageSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+      console.log('Image selected:', e.target.files[0]);
+    }
+  };
+
+  const handleAudioSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedAudio(e.target.files[0]);
+      console.log('Audio selected:', e.target.files[0]);
+    }
   };
 
   const handleToggleExpand = () => {
@@ -56,6 +72,8 @@ const ChatBubbleContainer: React.FC<ChatBubbleContainerProps> = (props) => {
     >
       <BubbleComponent
         {...props}
+        onAudioSelection={handleAudioSelection}
+        onImageSelection={handleImageSelection}
         isExpanded={isExpanded}
         message={message}
         position={position}

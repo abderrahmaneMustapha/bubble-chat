@@ -13,6 +13,8 @@ type ChatBubbleComponentProps = {
   onSendMessage: () => void;
   onToggleExpand: () => void;
   onMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onImageSelection: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onAudioSelection: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
@@ -27,6 +29,8 @@ const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
   onSendMessage,
   onToggleExpand,
   onMessageChange,
+  onImageSelection,
+  onAudioSelection
 }) => {
   return (
     <div style={{ position: 'absolute', top: position.y, left: position.x }}>
@@ -66,10 +70,49 @@ const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
               {msg.type === 'voice' && <audio controls src={msg.content} style={{ width: '100%', marginTop: '5px' }}></audio>}
             </div>
           ))}
-          <div style={{ padding: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: "flex", flexDirection: "row" }}>
-            <input type="text" value={message} onChange={onMessageChange} placeholder="Type a message..." style={{ width: '80%', padding: '10px', borderRadius: '20px',  border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }} />
-            <button onClick={onSendMessage} style={{ marginLeft: '10px', padding: '10px 20px', borderRadius: '20px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }}>Send</button>
-          </div>
+         <div style={{ padding: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: "flex", flexDirection: "column" }}>
+  
+  <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginBottom: '10px' }}>
+    <input 
+      type="file" 
+      accept="image/*" 
+      style={{ display: 'none' }} 
+      id="imageInput" 
+      onChange={onImageSelection}
+    />
+    <label htmlFor="imageInput" style={{ cursor: 'pointer', marginRight: '10px' }}>
+      📷
+    </label>
+    
+    <input 
+      type="file" 
+      accept="audio/*" 
+      style={{ display: 'none' }} 
+      id="audioInput" 
+      onChange={onAudioSelection}
+    />
+    <label htmlFor="audioInput" style={{ cursor: 'pointer' }}>
+      🎤
+    </label>
+  </div>
+  
+  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <input 
+      type="text" 
+      value={message} 
+      onChange={onMessageChange} 
+      placeholder="Type a message..." 
+      style={{ flex: 1, padding: '10px', borderRadius: '20px', border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }} 
+    />
+    <button 
+      onClick={onSendMessage} 
+      style={{ marginLeft: '10px', padding: '10px 20px', borderRadius: '20px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }}
+    >
+      ➤
+    </button>
+  </div>
+</div>
+
         </div>
       ) : (
         <div onClick={onToggleExpand} style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: accentColor, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }}>
