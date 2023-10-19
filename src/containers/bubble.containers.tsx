@@ -7,6 +7,7 @@ type ChatBubbleContainerProps = {
   avatar: string;
   accentColor: string;
   currentUser: string;
+  msgInputPlaceholder?: string;
   messages: Message[];
 };
 

@@ -10,6 +10,7 @@ type ChatBubbleComponentProps = {
   isExpanded: boolean;
   message: string;
   position: { x: number; y: number };
+  msgInputPlaceholder?: string;
   onSendMessage: () => void;
   onToggleExpand: () => void;
   onMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,6 +27,7 @@ const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
   isExpanded,
   message,
   position,
+  msgInputPlaceholder = "Type a message...",
   onSendMessage,
   onToggleExpand,
   onMessageChange,
@@ -36,7 +38,7 @@ const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
     <div style={{ position: 'absolute', top: position.y, left: position.x }}>
       {isExpanded ? (
         <div style={{ minWidth: '300px', maxWidth: '400px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)', position: 'relative'}}>
-          <button onClick={onToggleExpand} style={{ position: 'absolute', top: '5px', right: '5px', backgroundColor: 'transparent', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#aaa' }}>&times;</button>
+          <button onClick={onToggleExpand} style={{ position: 'absolute', top: '5px', backgroundColor: 'transparent', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#aaa', right: document.documentElement.dir === 'rtl' ? '90%' : '5px'}}>&times;</button>
           <div style={{ backgroundColor: accentColor, padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '20px 20px 0 0', marginBottom: '10px' }}>
             <img src={avatar} alt="avatar" style={{ width: '40px', borderRadius: '50%', border: '2px solid white' }} />
             <h2 style={{ marginLeft: '10px', color: 'white' }}>{title}</h2>
@@ -101,14 +103,14 @@ const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
       type="text" 
       value={message} 
       onChange={onMessageChange} 
-      placeholder="Type a message..." 
+      placeholder={msgInputPlaceholder}
       style={{ flex: 1, padding: '10px', borderRadius: '20px', border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }} 
     />
     <button 
       onClick={onSendMessage} 
       style={{ marginLeft: '10px', padding: '10px 20px', borderRadius: '20px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }}
     >
-      ➤
+     { document.documentElement.dir === 'rtl' ? '˂' : '˃' }
     </button>
   </div>
 </div>
