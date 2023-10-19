@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# ChatBubble Component
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The `ChatBubble` component is a  chat interface designed to provide a seamless chat experience for users. It's draggable, expandable, responsive, and supports RTL languages.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Draggable & Droppable**: move the chat bubble around the screen.
+- **Expandable**: Click on the chat bubble to expand and view the full chat interface.
+- **Responsive**: Adapts to various screen sizes ensuring a consistent user experience.
+- **RTL Support**: supports right-to-left languages.
+- **Container-Presenter Pattern**: The architecture follows the Container-Presenter pattern, ensuring a clear separation of logic and presentation.
 
-### `npm start`
+## Directory Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Containers**: This directory contains the logic and state management for the components. It's where the main `ChatBubbleContainer` resides.
+- **Components**: This directory contains the presentational components. It's where the `ChatBubbleComponent` (presenter) resides.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Usage Example
 
-### `npm test`
+Here's a simple example of how the `ChatBubble` component was integrated into the main application:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ChatBubbleContainer from './containers/ChatBubbleContainer';
 
-### `npm run build`
+const sampleMessages = [
+  { sender: 'user', type: 'text', content: 'Hello!' },
+  { sender: 'support', type: 'text', content: 'Hi there! How can I assist you today?' }
+];
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+function Main() {
+  return (
+    <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <ChatBubbleContainer 
+        title="Chat Support"
+        avatar="path_to_avatar_image"
+        accentColor="#007bff"
+        currentUser="user"
+        messages={sampleMessages}
+      />
+    </div>
+  );
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ReactDOM.render(<Main />, document.getElementById('root'));
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contributing
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Feel free to submit issues or pull requests if you have suggestions or improvements for the `ChatBubble` component.
