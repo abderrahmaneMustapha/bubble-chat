@@ -1,5 +1,6 @@
 import React from 'react';
 import { Message } from '../common/types';
+import styles from './bubble.module.css';
 
 type ChatBubbleComponentProps = {
   title: string;
@@ -35,90 +36,85 @@ const ChatBubbleComponent: React.FC<ChatBubbleComponentProps> = ({
   onAudioSelection
 }) => {
   return (
-    <div style={{ position: 'absolute', top: position.y, left: position.x }}>
+    <div  className={styles.container} style={{ top: position.y, left: position.x }}>
       {isExpanded ? (
-        <div style={{ minWidth: '300px', maxWidth: '400px', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)', position: 'relative'}}>
-          <button onClick={onToggleExpand} style={{ position: 'absolute', top: '5px', backgroundColor: 'transparent', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#aaa', right: document.documentElement.dir === 'rtl' ? '90%' : '5px'}}>&times;</button>
-          <div style={{ backgroundColor: accentColor, padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '20px 20px 0 0', marginBottom: '10px' }}>
-            <img src={avatar} alt="avatar" style={{ width: '40px', borderRadius: '50%', border: '2px solid white' }} />
-            <h2 style={{ marginLeft: '10px', color: 'white' }}>{title}</h2>
+        <div className={styles.expandedBubble} >
+          <button onClick={onToggleExpand}  className={styles.closeButton}  style={{ right: document.documentElement.dir === 'rtl' ? '90%' : '5px'}}>&times;</button>
+          <div className={styles.header}  style={{ backgroundColor: accentColor }}>
+            <img src={avatar} alt="avatar" className={styles.avatar} />
+            <h2 className={styles.title}>{title}</h2>
           </div>
-          {messages.map((msg, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                textAlign: msg.sender === currentUser ? 'right' : 'left',
-                marginBottom: '10px',
-                padding: '8px 12px',
-                borderRadius: '15px',
-                backgroundColor: msg.sender === currentUser ? '#3498db' : '#e1e1e1',
-                alignSelf: msg.sender === currentUser ? 'flex-end' : 'flex-start',
-                maxWidth: '80%',
-                marginLeft: msg.sender === currentUser ? '20%' : '0',
-                marginRight: msg.sender === currentUser ? '0' : '20%',
-              }}
+          <div className={styles.messagesContainer}>
+            {messages.map((msg, index) => (
+              <div 
+                key={index}
+                className={styles.message}
+                style={{ 
+                  textAlign: msg.sender === currentUser ? 'right' : 'left',
+                  backgroundColor: msg.sender === currentUser ? '#3498db' : '#e1e1e1',
+                  alignSelf: msg.sender === currentUser ? 'flex-end' : 'flex-start',
+                  marginLeft: msg.sender === currentUser ? '20%' : '0',
+                  marginRight: msg.sender === currentUser ? '0' : '20%',
+                }}
+              >
+                <span className={styles.senderName} style={{ 
+                  color: msg.sender === currentUser ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
+                }}>
+                  {msg.sender}
+                </span>
+                {msg.type === 'text' && <p className={styles.textMessage} style={{ color: msg.sender === currentUser ? 'white' : 'black' }}>{msg.content}</p>}
+                {msg.type === 'image' && <img src={msg.content} alt="sent content" className={styles.sentImage} />}
+                {msg.type === 'voice' && <audio controls src={msg.content} className={styles.sentAudio}></audio>}
+              </div>
+            ))}
+          </div>
+         <div className={styles.inputContainer}>
+  
+          <div className={styles.fileInputs}>
+            <input 
+              type="file" 
+              accept="image/*" 
+              className={styles.hiddenFileInput}
+              id="imageInput" 
+              onChange={onImageSelection}
+            />
+            <label htmlFor="imageInput" className={styles.fileLabels}>
+              📷
+            </label>
+            
+            <input 
+              type="file" 
+              accept="audio/*" 
+              style={{ display: 'none' }} 
+              id="audioInput" 
+              onChange={onAudioSelection}
+            />
+            <label htmlFor="audioInput" className={styles.fileLabels}>
+              🎤
+            </label>
+          </div>
+          
+          <div className={styles.textMessageContainer}>
+            <input 
+              type="text" 
+              value={message} 
+              onChange={onMessageChange} 
+              placeholder={msgInputPlaceholder}
+              className={styles.textInput}
+            />
+            <button 
+              onClick={onSendMessage} 
+              className={styles.sendMessageButton}
             >
-              <span style={{ 
-                fontSize: '10px', 
-                fontWeight: 'bold', 
-                color: msg.sender === currentUser ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
-                marginBottom: '5px',
-                display: 'block'
-              }}>
-                {msg.sender}
-              </span>
-              {msg.type === 'text' && <p style={{ color: msg.sender === currentUser ? 'white' : 'black', margin: 0, fontSize: '16px' }}>{msg.content}</p>}
-              {msg.type === 'image' && <img src={msg.content} alt="sent content" style={{ maxWidth: '100%', borderRadius: '10px', marginTop: '5px' }} />}
-              {msg.type === 'voice' && <audio controls src={msg.content} style={{ width: '100%', marginTop: '5px' }}></audio>}
-            </div>
-          ))}
-         <div style={{ padding: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: "flex", flexDirection: "column" }}>
-  
-  <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginBottom: '10px' }}>
-    <input 
-      type="file" 
-      accept="image/*" 
-      style={{ display: 'none' }} 
-      id="imageInput" 
-      onChange={onImageSelection}
-    />
-    <label htmlFor="imageInput" style={{ cursor: 'pointer', marginRight: '10px' }}>
-      📷
-    </label>
-    
-    <input 
-      type="file" 
-      accept="audio/*" 
-      style={{ display: 'none' }} 
-      id="audioInput" 
-      onChange={onAudioSelection}
-    />
-    <label htmlFor="audioInput" style={{ cursor: 'pointer' }}>
-      🎤
-    </label>
-  </div>
-  
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-    <input 
-      type="text" 
-      value={message} 
-      onChange={onMessageChange} 
-      placeholder={msgInputPlaceholder}
-      style={{ flex: 1, padding: '10px', borderRadius: '20px', border: 'none', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }} 
-    />
-    <button 
-      onClick={onSendMessage} 
-      style={{ marginLeft: '10px', padding: '10px 20px', borderRadius: '20px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'black', border: '1px solid rgba(255, 255, 255, 0.2)', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }}
-    >
-     { document.documentElement.dir === 'rtl' ? '˂' : '˃' }
-    </button>
-  </div>
-</div>
+            { document.documentElement.dir === 'rtl' ? '˂' : '˃' }
+            </button>
+          </div>
+        </div>
 
         </div>
       ) : (
-        <div onClick={onToggleExpand} style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: accentColor, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)' }}>
-          <img src={avatar} alt="avatar" style={{ width: '40px', borderRadius: '50%', border: '2px solid white' }} />
+        <div onClick={onToggleExpand} style={{ backgroundColor: accentColor }} className={styles.collapsedBubble}>
+          <img src={avatar} alt="avatar" className={styles.collapsedBubbleImage} />
         </div>
       )}
     </div>
