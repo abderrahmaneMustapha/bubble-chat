@@ -10,8 +10,6 @@ The `ChatBubble` component is a  chat interface designed to provide a seamless c
 - **RTL Support**: supports right-to-left languages.
 - **Container-Presenter Pattern**: The architecture follows the Container-Presenter pattern, ensuring a clear separation of logic and presentation.
 
-Certainly! Here's a section you can add to your README to specify the requirements:
-
 ---
 
 ## Requirements
